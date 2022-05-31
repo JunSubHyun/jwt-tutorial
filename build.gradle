@@ -1,0 +1,61 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.jwt'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.2.0'
+	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+	implementation group: 'org.mybatis', name: 'mybatis-typehandlers-jsr310', version: '1.0.2'
+	implementation group: 'org.mybatis', name: 'mybatis-spring', version: '2.0.6'
+	implementation 'mysql:mysql-connector-java'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' /* Thymeleaf Layout */
+	implementation 'com.google.code.gson:gson:2.9.0' /* Google Json Open Library */
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2'
+
+	//보안
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+
+	//쿼리로그
+	implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+	implementation 'junit:junit:4.13.2'
+
+	//파일업로드
+	implementation 'commons-io:commons-io:2.11.0'
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+
+	compileOnly 'org.projectlombok:lombok'
+
+	//runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'mysql:mysql-connector-java'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation 'com.auth0:java-jwt:3.10.2'
+}
+tasks.named('test') {
+	useJUnitPlatform()
+}
