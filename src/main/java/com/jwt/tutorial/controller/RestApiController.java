@@ -4,10 +4,7 @@ import com.jwt.tutorial.model.User;
 import com.jwt.tutorial.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,8 +33,8 @@ public class RestApiController {
 
     //user,manager,admin 접근가능
     @GetMapping("/api/v1/user")
-    public String user(){
-        return "user";
+    public String user(@RequestBody User user){
+        return user.getUsername();
     }
 
     //manager,admin 접근가능
@@ -51,6 +48,5 @@ public class RestApiController {
     public String admin(){
         return "admin";
     }
-
 
 }

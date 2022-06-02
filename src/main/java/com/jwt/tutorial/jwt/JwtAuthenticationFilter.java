@@ -43,8 +43,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             //jsonData 를 파싱해주는 class
             ObjectMapper om = new ObjectMapper();
             User user = om.readValue(request.getInputStream(),User.class);
-            System.out.println(user);
-            //User(id=0, username=ssar, password=1234, roles=null)
+            //user = User(id=0, username=ssar, password=1234, roles=null)
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken (user.getUsername(),user.getPassword());
 
             //PrincipalDetailsService의 loadUserByUsername() 함수가 실행됨
@@ -79,14 +78,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         System.out.println("successfulAuthentication 실행이 됐다는건 로그인 성공");
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
-
+        System.out.println("new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)) :"+new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)));
         String jwtToken = JWT.create()
                 .withSubject(principalDetails.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)))             //1분*10
+                .withExpiresAt(new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)))
                 .withClaim("id",principalDetails.getUser().getUsername())
                 .withClaim("username",principalDetails.getUser().getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
-       response.addHeader(JwtProperties.HEADER_STRING,JwtProperties.TOKEN_PROFIX+jwtToken);
+        response.addHeader(JwtProperties.HEADER_STRING,JwtProperties.TOKEN_PROFIX+jwtToken);
+
+        String jwtTokenRefresh = JWT.create()
+                .withSubject(principalDetails.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME_REFRESH)))
+                .withClaim("id",principalDetails.getUser().getUsername())
+                .withClaim("username",principalDetails.getUser().getUsername())
+                .sign(Algorithm.HMAC512(JwtProperties.SECRET_REFRESH));
+
+        response.addHeader(JwtProperties.HEADER_STRING_REFRESH,JwtProperties.TOKEN_PROFIX_REFRESH+jwtTokenRefresh);
+
     }
 }

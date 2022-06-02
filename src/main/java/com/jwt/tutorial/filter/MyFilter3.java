@@ -22,10 +22,12 @@ public class MyFilter3 implements Filter {
             System.out.println("headAuth  :" + headerAuth  );
 
             if(headerAuth.equals("cos")){
+                System.out.println("cos::::"+headerAuth);
+
                 chain.doFilter(req,res);
             }else{
-                PrintWriter out = res.getWriter();
-                out.println("인증안됨");
+                System.out.println("인증안됨");
+                return;
             }
 
         }
