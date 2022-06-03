@@ -1,10 +1,15 @@
 package com.jwt.tutorial.controller;
 
+import com.google.gson.JsonObject;
+import com.jwt.tutorial.model.MemberDTO;
 import com.jwt.tutorial.model.User;
 import com.jwt.tutorial.repository.UserRepository;
+import com.jwt.tutorial.sevice.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.lang.reflect.Member;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,6 +17,8 @@ public class RestApiController {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final MemberService memberService;
 
     @GetMapping("home")
     public String home(){
@@ -49,4 +56,10 @@ public class RestApiController {
         return "admin";
     }
 
+    @PostMapping("/test/login")
+    public String  loginApi(@RequestBody MemberDTO member){
+        System.out.println("userId   : "+member.getUserId());
+        String result = memberService.loginMember(member.getUserId(),member.getPassword());
+        return result;
+    }
 }
